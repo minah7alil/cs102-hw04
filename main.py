@@ -1,3 +1,4 @@
+import random
 import sys
 from PIL import Image
 
@@ -9,24 +10,18 @@ output_path = sys.argv[2]
 img = Image.open(input_path)
 width, height = img.size
 
-# Create a new, all-white image that's the same size as the original
 new_img = Image.new("RGB", (width, height), "white")
 
-# TODO: Replace this with your own filter!
-# Median pixel filter, taken from https://note.nkmk.me/en/python-opencv-pillow-image-size
-members = [(0, 0)] * 9
-for i in range(1, width - 1):
-    for j in range(1, height - 1):
-        members[0] = img.getpixel((i - 1, j - 1))
-        members[1] = img.getpixel((i - 1, j))
-        members[2] = img.getpixel((i - 1, j + 1))
-        members[3] = img.getpixel((i, j - 1))
-        members[4] = img.getpixel((i, j))
-        members[5] = img.getpixel((i, j + 1))
-        members[6] = img.getpixel((i + 1, j - 1))
-        members[7] = img.getpixel((i + 1, j))
-        members[8] = img.getpixel((i + 1, j + 1))
-        members.sort()
-        new_img.putpixel((i, j), (members[4]))
 
-new_img.save(output_path, "JPEG")
+for i in range(20, width - 20):
+    for j in range(20, height - 20):
+        R, G, B = img.getpixel((i,j))
+        if R > 10:
+            R = R + 10
+        if G > 10:
+            G = G + 180
+        if B > 10:
+            B = B + 10
+        new_img.putpixel((i, j), (R, G, B))
+new_img.save(output_path)
+exit(print(f"Lets make the world more green"))
